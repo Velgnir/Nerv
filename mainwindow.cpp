@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     QString Qpath = QString::fromStdString(Nerv.ShowPath());
     ui->lineEdit->setText(Qpath);
 
+
+    //setCentralWidget(ui->scrollArea);
 }
 
 MainWindow::~MainWindow()
@@ -21,26 +23,38 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::Folders() {
-    QLayoutItem* item;
-    while ((item = ui->gridLayout->takeAt(0)) != nullptr) {
-        delete item->widget();
-        delete item;
-    }
-    int x=0,y=0;
+    QScrollArea* scrollArea = ui->scrollArea;
+    QWidget* scrollContent = new QWidget;
+
+    QVBoxLayout* scrollLayout = new QVBoxLayout(scrollContent);
+    ui->gridLayout = new QGridLayout;
+
+    scrollLayout->addLayout(ui->gridLayout);
+    scrollLayout->addLayout(ui->gridLayout);
+    scrollContent->setLayout(scrollLayout);
+    scrollArea->setWidget(scrollContent);
+    scrollContent->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+
+    int row = 0;
+    int column = 0;
     for (const auto& file : Nerv.ShowFilesList()) {
         QPushButton* button1 = new QPushButton(QString::fromStdString(file));
-        button1->setMaximumWidth(75);
-        button1->setMaximumHeight(75);
-        button1->setMinimumHeight(75);
+        // Set button properties if needed
+        button1->setMaximumWidth(100);
+        button1->setMinimumHeight(100);
         connect(button1, &QPushButton::clicked, this, &MainWindow::handleButtonClick);
-        ui->gridLayout->addWidget(button1, y, x);
-        ++x;
-        if(x==5){
-            x=0;
-            ++y;
+        ui->gridLayout->addWidget(button1,row, column);
+        column++;
+        if (column >=5) {
+            column = 0;
+            row++;
         }
     }
 
+
+
+    //setCentralWidget(ui->scrollArea);
+    //setCentralWidget(scrollArea);
 }
 void MainWindow::Update() {
     Nerv.SetPath(ui->lineEdit->text().toStdString());

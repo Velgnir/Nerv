@@ -1,10 +1,12 @@
 #include "filecontroller.h"
+#include "qscrollarea.h"
 #include <QApplication>
 #include <QWidget>
 #include <QPushButton>
 #include <QGridLayout>
 #include <QDir>
 #include <QFileInfo>
+#include <QWidget>
 
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
@@ -23,6 +25,9 @@ public:
     FileController Nerv;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+
+
 
 private slots:
     void handleButtonClick();

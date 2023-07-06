@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1067</width>
-    <height>631</height>
+    <width>1078</width>
+    <height>658</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,6 +32,32 @@
       <width>256</width>
       <height>551</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_Next">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>10</y>
+      <width>41</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Next</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_Prev">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>41</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Prev</string>
     </property>
    </widget>
    <widget class="QScrollArea" name="scrollArea">
@@ -60,39 +86,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>791</width>
-        <height>541</height>
+        <width>801</width>
+        <height>551</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout"/>
      </widget>
     </widget>
-   </widget>
-   <widget class="QPushButton" name="pushButton_Next">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>10</y>
-      <width>41</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Next</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_Prev">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>41</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Prev</string>
-    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -100,7 +100,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1067</width>
+     <width>1078</width>
      <height>21</height>
     </rect>
    </property>
