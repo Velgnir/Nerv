@@ -1,7 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <filesystem>
-
+#include <Windows.h>
+#include <iostream>
+#include <vector>
+#include <string>
+#include "fileinlist.h"
 #ifndef FILECONTROLLER_H
 #define FILECONTROLLER_H
 
@@ -11,7 +15,10 @@ class FileController
 private:
     std::string path;
     std::vector<std::string> FilesList;
+
 public:
+    //maybe rewrite later
+    std::vector<FileInList> Files_browser;
     FileController();
 
     bool UpdateFiles(){

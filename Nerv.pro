@@ -10,11 +10,13 @@ CONFIG += c++17
 
 SOURCES += \
     filecontroller.cpp \
+    fileinlist.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     filecontroller.h \
+    fileinlist.h \
     mainwindow.h
 
 FORMS += \
