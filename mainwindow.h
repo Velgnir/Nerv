@@ -8,11 +8,14 @@
 #include <QWidget>
 #include "ui_mainwindow.h"
 #include "filecontroller.h"
-#include "fileinlist.h"
 #include <QCheckBox>
 #include <QLabel>
-
-
+#include <filesystem>
+//#include <QDragEnterEvent>
+//#include <QDropEvent>
+//#include <QMimeData>
+//#include <QUrl>
+//#include <QDebug>
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -32,12 +35,13 @@ public:
     ~MainWindow();
     std::vector<FileInList> Update_File_Tree(std::vector<FileInList> tree);
 
-
-
-
+    /*
+protected:
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;*/
 private slots:
-    void handleButtonClick();
-    void BrowserButtonClick();
+    void handleButtonClick(FileInList* file);
+    void BrowserButtonClick(FileInList* file);
     void on_lineEdit_returnPressed();
 
     void on_pushButton_Prev_clicked();

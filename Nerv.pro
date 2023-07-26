@@ -15,9 +15,14 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    DirectoryFile.h \
+    ExeFile.h \
+    ImageFile.h \
+    file.h \
     filecontroller.h \
     fileinlist.h \
-    mainwindow.h
+    mainwindow.h \
+    textfile.h
 
 FORMS += \
     mainwindow.ui

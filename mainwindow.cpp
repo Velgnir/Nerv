@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+   // setAcceptDrops(true);
     Nerv = *new FileController;
     ui->lineEdit->setText( QString::fromStdString("C:\\"));
     Update();
@@ -41,8 +42,8 @@ void File_Search(std::vector<FileInList>& tree,int i, std::string path,std::vect
         if(tree[i].status && tree[i+1].level>tree[i].level){
             File_Search(tree,i+1,tree[i+1].path,new_tree);
         }else if(tree[i].status && tree[i+1].level<=tree[i].level){
-//gotta create new
-            for(const std::string& el : tree[i].FilesAt()){
+            //gotta create new
+            for(const std::string& el : tree[i].FileTo->read(tree[i].path)){
                 FileInList* new_one = new FileInList(path+"\\"+el,el,tree[i].level+1);
                 new_tree.push_back(*new_one);
             }
@@ -58,11 +59,11 @@ void File_Search(std::vector<FileInList>& tree,int i, std::string path,std::vect
     }else if(i<=tree.size()-1){
         new_tree.push_back(tree[i]);
         if( tree[i].status){
-                //gotta create new
-                for(const std::string& el : tree[i].FilesAt()){
-                    FileInList* new_one = new FileInList(path+"\\"+el,el,tree[i].level+1);
-                    new_tree.push_back(*new_one);
-                }
+            //gotta create new
+            for(const std::string& el : tree[i].FileTo->read(tree[i].path)){
+                FileInList* new_one = new FileInList(path+"\\"+el,el,tree[i].level+1);
+                new_tree.push_back(*new_one);
+            }
 
         }
     }
@@ -94,7 +95,12 @@ void MainWindow::Folders() {
         // Set button properties if needed
         button1->setMaximumWidth(100);
         button1->setMinimumHeight(100);
-        connect(button1, &QPushButton::clicked, this, &MainWindow::handleButtonClick);
+        button1 ->setToolTip(QString::fromStdString(Nerv.ShowPath()+"\\"+file));
+        FileInList* fileA = new FileInList(Nerv.ShowPath()+"\\"+file,file, 0);
+        connect(button1, &QPushButton::clicked, this, [this, fileA]() {
+            handleButtonClick(fileA);
+        });
+        //connect(button1, &QPushButton::clicked, this, &MainWindow::handleButtonClick);
         ui->gridLayout->addWidget(button1,row, column);
         column++;
         if (column >=5) {
@@ -130,7 +136,13 @@ void MainWindow::Update_browser(){
 
         QPushButton* button1 = new QPushButton(QString::fromStdString(Nerv.Files_browser[i].name));
         button1 ->setToolTip(QString::fromStdString(Nerv.Files_browser[i].path));
-        connect(button1, &QPushButton::clicked, this, &MainWindow::BrowserButtonClick);
+        button1 -> setMaximumWidth(200);
+
+        FileInList* file = new FileInList(Nerv.Files_browser[i].path,Nerv.Files_browser[i].name, 0);
+        connect(button1, &QPushButton::clicked, this, [this, file]() {
+            BrowserButtonClick(file);
+        });
+
         QCheckBox* checkBox = new QCheckBox();
         checkBox->setMinimumWidth(Nerv.Files_browser[i].level * WidthMultiplier+20);
         checkBox->setMaximumWidth(Nerv.Files_browser[i].level * WidthMultiplier+30);
@@ -215,7 +227,7 @@ void MainWindow::on_lineEdit_returnPressed()
     }
 }
 
-void MainWindow::handleButtonClick() {
+void MainWindow::handleButtonClick(FileInList* file) {
     QPushButton* clickedButton = qobject_cast<QPushButton*>(sender());
     /*
     if (clickedButton) {
@@ -223,25 +235,38 @@ void MainWindow::handleButtonClick() {
         qDebug() << "Button clicked: " << buttonName;
     }
 */
-    if (clickedButton) {
-        QString qstr = QString::fromStdString(Nerv.ShowPath()+"\\");
-        ui->lineEdit->setText(qstr+clickedButton->text());
-        Update();
-        //TODO: rewrite it to its own function
-        QString Qdir = QString::fromStdString(Nerv.ShowPath());
-        QFileInfo fileInfo(Qdir);
-        if (fileInfo.isDir()) {
-            Nerv.current_history_moment=Nerv.History.size();
-            Nerv.History.push_back(Nerv.ShowPath());
 
+    if (clickedButton) {
+
+        if(std::filesystem::is_directory(clickedButton->toolTip().toStdString())){
+         QString qstr = QString::fromStdString(Nerv.ShowPath()+"\\");
+            ui->lineEdit->setText(qstr+clickedButton->text());
+            Update();
+            //TODO: rewrite it to its own function
+            QString Qdir = QString::fromStdString(Nerv.ShowPath());
+            QFileInfo fileInfo(Qdir);
+            if (fileInfo.isDir()) {
+                Nerv.current_history_moment=Nerv.History.size();
+                Nerv.History.push_back(Nerv.ShowPath());
+
+            }
+        }else{
+            file->FileTo->open(file->path);
         }
+
+
+
     }
 }
-void MainWindow::BrowserButtonClick() {
+void MainWindow::BrowserButtonClick(FileInList* file) {
     //TODO
     QPushButton* clickedButton = qobject_cast<QPushButton*>(sender());
     ui->lineEdit->setText(clickedButton->toolTip());
-    Update();
+    if(std::filesystem::is_directory(clickedButton->toolTip().toStdString())){
+        Update();
+    }else{
+        file->FileTo->open(file->path);
+    }
 }
 
 void MainWindow::on_pushButton_Prev_clicked()
@@ -278,3 +303,26 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
     Nerv.Files_browser=::Update_File_Tree(Nerv.Files_browser);
     Update_browser();
 }
+
+
+/*
+void MainWindow::dragEnterEvent(QDragEnterEvent *event) {
+    if (event->mimeData()->hasUrls()) {
+        event->acceptProposedAction();
+    }
+}
+
+void MainWindow::dropEvent(QDropEvent *event) {
+    const QMimeData *mimeData = event->mimeData();
+    if (mimeData->hasUrls()) {
+        QList<QUrl> urlList = mimeData->urls();
+        for (const QUrl &url : urlList) {
+            QString filePath = url.toLocalFile();
+            qDebug() << "Dropped file path: " << filePath;
+            // You can process the dropped file path here
+            // e.g., open the file or perform any custom actions
+        }
+        event->acceptProposedAction();
+    }
+}
+*/
