@@ -6,15 +6,28 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
    // setAcceptDrops(true);
-    Nerv = *new FileController;
+
+    ui->scrollArea = new CustomScrollArea(&Nerv,this);
+
+
+    ui->scrollArea->setGeometry(490, 40, 801, 551);
+
+
+    ui->scrollArea->setWidgetResizable(true);
+
+
+    ui->scrollAreaWidgetContents->setGeometry(0, 0, 799, 549);
+
+    ui->gridLayoutWidget->setGeometry(0, 0, 801, 551);
+
+
+ Nerv = *new FileController;
+    //setCentralWidget(ui->scrollArea);
+#ifdef _WIN32
     ui->lineEdit->setText( QString::fromStdString("C:\\"));
     Update();
     QString Qpath = QString::fromStdString(Nerv.ShowPath());
     ui->lineEdit->setText(Qpath);
-
-
-    //setCentralWidget(ui->scrollArea);
-
     DWORD drivesMask = GetLogicalDrives();
 
     std::vector<std::string> drives;
@@ -27,6 +40,18 @@ MainWindow::MainWindow(QWidget *parent)
         }
         drivesMask >>= 1;
     }
+
+#elif __linux__
+    ui->lineEdit->setText( QString::fromStdString("/"));
+     Update();
+    QString Qpath = QString::fromStdString(Nerv.ShowPath());
+    ui->lineEdit->setText(Qpath);
+    FileInList* new_one = new FileInList("/" ,"/"  ,0);
+    Nerv.Files_browser.push_back(*new_one);
+#endif
+
+
+
     Update_browser();
 }
 
@@ -44,7 +69,12 @@ void File_Search(std::vector<FileInList>& tree,int i, std::string path,std::vect
         }else if(tree[i].status && tree[i+1].level<=tree[i].level){
             //gotta create new
             for(const std::string& el : tree[i].FileTo->read(tree[i].path)){
+#ifdef _WIN32
                 FileInList* new_one = new FileInList(path+"\\"+el,el,tree[i].level+1);
+#elif __linux__
+                FileInList* new_one = new FileInList(path+"/"+el,el,tree[i].level+1);
+#endif
+                //FileInList* new_one = new FileInList(path+"\\"+el,el,tree[i].level+1);
                 new_tree.push_back(*new_one);
             }
             File_Search(tree,i+1,tree[i+1].path,new_tree);
@@ -61,7 +91,12 @@ void File_Search(std::vector<FileInList>& tree,int i, std::string path,std::vect
         if( tree[i].status){
             //gotta create new
             for(const std::string& el : tree[i].FileTo->read(tree[i].path)){
+#ifdef _WIN32
                 FileInList* new_one = new FileInList(path+"\\"+el,el,tree[i].level+1);
+#elif __linux__
+                FileInList* new_one = new FileInList(path+"/"+el,el,tree[i].level+1);
+#endif
+
                 new_tree.push_back(*new_one);
             }
 
@@ -76,6 +111,7 @@ std::vector<FileInList> Update_File_Tree(std::vector<FileInList> tree){
     return new_one;
 }
 void MainWindow::Folders() {
+
     QScrollArea* scrollArea = ui->scrollArea;
     QWidget* scrollContent = new QWidget;
 
@@ -91,12 +127,19 @@ void MainWindow::Folders() {
     int row = 0;
     int column = 0;
     for (const auto& file : Nerv.ShowFilesList()) {
-        QPushButton* button1 = new QPushButton(QString::fromStdString(file));
+        BUTTONCUSTOMMENU* button1 = new BUTTONCUSTOMMENU(QString::fromStdString(file),&Nerv,this);
         // Set button properties if needed
         button1->setMaximumWidth(100);
         button1->setMinimumHeight(100);
+#ifdef _WIN32
         button1 ->setToolTip(QString::fromStdString(Nerv.ShowPath()+"\\"+file));
         FileInList* fileA = new FileInList(Nerv.ShowPath()+"\\"+file,file, 0);
+#elif __linux__
+        button1 ->setToolTip(QString::fromStdString(Nerv.ShowPath()+"/"+file));
+        FileInList* fileA = new FileInList(Nerv.ShowPath()+"/"+file,file, 0);
+#endif
+
+
         connect(button1, &QPushButton::clicked, this, [this, fileA]() {
             handleButtonClick(fileA);
         });
@@ -133,8 +176,8 @@ void MainWindow::Update_browser(){
 
     for(int i = 0; i < Nerv.Files_browser.size(); ++i) {
         QHBoxLayout* rowLayout = new QHBoxLayout;  // Create a layout for each row
-
-        QPushButton* button1 = new QPushButton(QString::fromStdString(Nerv.Files_browser[i].name));
+        BUTTONCUSTOMMENU* button1 = new BUTTONCUSTOMMENU(QString::fromStdString(Nerv.Files_browser[i].name),&Nerv,this);
+       // QPushButton* button1 = new QPushButton(QString::fromStdString(Nerv.Files_browser[i].name));
         button1 ->setToolTip(QString::fromStdString(Nerv.Files_browser[i].path));
         button1 -> setMaximumWidth(200);
 
@@ -158,52 +201,10 @@ void MainWindow::Update_browser(){
     }
 
 
-    /*    QScrollArea* scrollArea = ui->scrollArea;
-    QWidget* scrollContent = new QWidget;
-
-    QVBoxLayout* scrollLayout = new QVBoxLayout(scrollContent);
-    ui->gridLayout = new QGridLayout;
-
-    scrollLayout->addLayout(ui->gridLayout);
-    scrollLayout->addLayout(ui->gridLayout);
-    scrollContent->setLayout(scrollLayout);
-    scrollArea->setWidget(scrollContent);
-    scrollContent->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-
-    int row = 0;
-    int column = 0;
-    for (const auto& file : Nerv.ShowFilesList()) {
-        QPushButton* button1 = new QPushButton(QString::fromStdString(file));
-        // Set button properties if needed
-        button1->setMaximumWidth(100);
-        button1->setMinimumHeight(100);
-        connect(button1, &QPushButton::clicked, this, &MainWindow::handleButtonClick);
-        ui->gridLayout->addWidget(button1,row, column);
-        column++;
-        if (column >=5) {
-            column = 0;
-            row++;
-        }
-    }*/
-
-   // QLayout* layout = ui->gridLayout_2
-    //int newWidth = 5;
-
-    //QSpacerItem* existingSpacer = ui->horizontalSpacer;
-
-    //layout->removeItem(existingSpacer);
-
-    //QSpacerItem* newSpacer = new QSpacerItem(newWidth, 0, QSizePolicy::Fixed, QSizePolicy::Minimum);
-
-
-    //layout->addItem(newSpacer);
-
-    //existingSpacer = newSpacer;
-    //ui->gridLayout->update();
-
 }
 void MainWindow::Update() {
     Nerv.SetPath(ui->lineEdit->text().toStdString());
+    //qDebug()<<ui->lineEdit->text().toStdString();
     if(Nerv.UpdateFiles()){
 
 
@@ -239,7 +240,12 @@ void MainWindow::handleButtonClick(FileInList* file) {
     if (clickedButton) {
 
         if(std::filesystem::is_directory(clickedButton->toolTip().toStdString())){
-         QString qstr = QString::fromStdString(Nerv.ShowPath()+"\\");
+            #ifdef _WIN32
+                QString qstr = QString::fromStdString(Nerv.ShowPath()+"\\");
+            #elif __linux__
+                QString qstr = QString::fromStdString(Nerv.ShowPath()+"/");
+            #endif
+
             ui->lineEdit->setText(qstr+clickedButton->text());
             Update();
             //TODO: rewrite it to its own function
@@ -264,6 +270,8 @@ void MainWindow::BrowserButtonClick(FileInList* file) {
     ui->lineEdit->setText(clickedButton->toolTip());
     if(std::filesystem::is_directory(clickedButton->toolTip().toStdString())){
         Update();
+        Nerv.current_history_moment=Nerv.History.size();
+        Nerv.History.push_back(Nerv.ShowPath());
     }else{
         file->FileTo->open(file->path);
     }
@@ -299,30 +307,12 @@ void MainWindow::on_pushButton_Next_clicked()
 void MainWindow::on_checkBox_stateChanged(int arg1)
 {
     QCheckBox* checkbox = qobject_cast<QCheckBox*>(sender());
-    Nerv.Files_browser[std::stoi(checkbox->objectName().toStdString())].status = checkbox->isChecked();
-    Nerv.Files_browser=::Update_File_Tree(Nerv.Files_browser);
-    Update_browser();
-}
-
-
-/*
-void MainWindow::dragEnterEvent(QDragEnterEvent *event) {
-    if (event->mimeData()->hasUrls()) {
-        event->acceptProposedAction();
+    if(std::filesystem::is_directory(Nerv.Files_browser[std::stoi(checkbox->objectName().toStdString())].path)){
+        Nerv.Files_browser[std::stoi(checkbox->objectName().toStdString())].status = checkbox->isChecked();
+        Nerv.Files_browser=::Update_File_Tree(Nerv.Files_browser);
+        Update_browser();
     }
 }
 
-void MainWindow::dropEvent(QDropEvent *event) {
-    const QMimeData *mimeData = event->mimeData();
-    if (mimeData->hasUrls()) {
-        QList<QUrl> urlList = mimeData->urls();
-        for (const QUrl &url : urlList) {
-            QString filePath = url.toLocalFile();
-            qDebug() << "Dropped file path: " << filePath;
-            // You can process the dropped file path here
-            // e.g., open the file or perform any custom actions
-        }
-        event->acceptProposedAction();
-    }
-}
-*/
+
+

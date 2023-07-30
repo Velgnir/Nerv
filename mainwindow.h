@@ -16,6 +16,8 @@
 //#include <QMimeData>
 //#include <QUrl>
 //#include <QDebug>
+#include "buttoncustommenu.h"
+#include "ScrollCustomMenu.h"
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -50,6 +52,7 @@ private slots:
 
     void on_checkBox_stateChanged(int arg1);
 
+    //void showContextMenu(const QPoint& pos);
 private:
     void Folders();
     void Update();

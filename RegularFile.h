@@ -1,14 +1,16 @@
-// TextFile.h
-#ifndef TEXT_FILE_H
-#define TEXT_FILE_H
+#ifndef REGULARFILE_H
+#define REGULARFILE_H
 
-#include "File.h"
+#include "file.h"
+#include <filesystem>
 #include <iostream>
+#include <vector>
 
 
-class TextFile : public File {
+class RegularFile : public File {
 public:
     void open(std::string path) override {
+#ifdef _WIN32
         std::string command = "start \"\" \"" + path + "\"";
 
         // Execute the shell command to open the image file
@@ -16,23 +18,20 @@ public:
 
         // Check if the command execution was successful
         if (result == 0) {
-            std::cout << "Text file opened successfully." << std::endl;
+            std::cout << "Exe file opened successfully." << std::endl;
         } else {
-            std::cout << "Error opening text file." << std::endl;
+            std::cout << "Error opening exe file." << std::endl;
         }
-    }
+#elif __linux__
+        system(path.c_str());
+#endif
 
-    void close() override {
-        std::cout << "Closing text file." << std::endl;
+
     }
 
     std::vector<std::string> read(std::string path) override {
         return {};
     }
-
-    void write() override {
-        std::cout << "Writing to text file." << std::endl;
-    }
 };
 
-#endif // TEXT_FILE_H
+#endif // REGULARFILE_H

@@ -9,20 +9,28 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ScrollCustomMenu.cpp \
+    buttoncustommenu.cpp \
     filecontroller.cpp \
     fileinlist.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    Blockfile.h \
+    CharacterFile.h \
     DirectoryFile.h \
-    ExeFile.h \
-    ImageFile.h \
+    FifoFile.h \
+    OtherFiles.h \
+    RegularFile.h \
+    ScrollCustomMenu.h \
+    SocketFile.h \
+    Symlink.h \
+    buttoncustommenu.h \
     file.h \
     filecontroller.h \
     fileinlist.h \
-    mainwindow.h \
-    textfile.h
+    mainwindow.h
 
 FORMS += \
     mainwindow.ui

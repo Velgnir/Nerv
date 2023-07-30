@@ -1,9 +1,12 @@
-#include "FileInList.h"
-#include "textfile.h"
-#include "ImageFile.h"
+#include "fileinlist.h"
+#include "Blockfile.h"
+#include "CharacterFile.h"
 #include "DirectoryFile.h"
-#include "ExeFile.h"
-
+#include "RegularFile.h"
+#include "OtherFiles.h"
+#include "Symlink.h"
+#include "FifoFile.h"
+#include "SocketFile.h"
 std::string getFileExtension(const std::string& filename) {
     size_t dotPos = filename.find_last_of(".");
     if (dotPos != std::string::npos) {
@@ -18,6 +21,7 @@ FileInList::FileInList(std::string path, std::string name, int set_level){
     this->level = set_level;
     this->status = false;
     std::string file_type = getFileExtension(name);
+    /*
     if(std::filesystem::is_directory(path))
     {
         FileTo = std::make_unique<DirectoryFile>();
@@ -31,9 +35,38 @@ FileInList::FileInList(std::string path, std::string name, int set_level){
     else if(file_type=="exe")
     {
         FileTo = std::make_unique<ExeFile>();
+    }else
+    {
+        FileTo = std::make_unique<Otherfile>();
     }
+*/
         // Add other cases as needed for other file types
 
+    if (std::filesystem::is_directory(path)) {
+        FileTo = std::make_unique<DirectoryFile>();
+        std::cout << "File is a directory file." << std::endl;
+    } else if (std::filesystem::is_regular_file(path)) {
+        FileTo = std::make_unique<RegularFile>();
+        std::cout << "File is a regular file." << std::endl;
+    } else if (std::filesystem::is_block_file(path)) {
+        FileTo = std::make_unique<BlockFile>();
+        std::cout << "File is a block device." << std::endl;
+    } else if (std::filesystem::is_character_file(path)) {
+        FileTo = std::make_unique<CharacterFile>();
+        std::cout << "File is a character device." << std::endl;
+    } else if (std::filesystem::is_fifo(path)) {
+        FileTo = std::make_unique<FifoFile>();
+        std::cout << "File is a FIFO (Named Pipe)." << std::endl;
+    } else if (std::filesystem::is_socket(path)) {
+        FileTo = std::make_unique<SocketFile>();
+        std::cout << "File is a socket." << std::endl;
+    } else if (std::filesystem::is_symlink(path)) {
+        FileTo = std::make_unique<SymlinkFile>();
+        std::cout << "File is a symbolic link." << std::endl;
+    } else {
+        FileTo = std::make_unique<OtherFile>();
+        std::cout << "Unknown file type." << std::endl;
+    }
 }
 
 FileInList::FileInList(const FileInList& other)
@@ -42,17 +75,31 @@ FileInList::FileInList(const FileInList& other)
     if (other.FileTo)
     {
         // Determine the actual dynamic type of the object and create the corresponding subclass
-        if (dynamic_cast<TextFile*>(other.FileTo.get()))
+        if (dynamic_cast<BlockFile*>(other.FileTo.get()))
         {
-            FileTo = std::make_unique<TextFile>(*dynamic_cast<TextFile*>(other.FileTo.get()));
+            FileTo = std::make_unique<BlockFile>(*dynamic_cast<BlockFile*>(other.FileTo.get()));
         }
-        else if (dynamic_cast<ImageFile*>(other.FileTo.get()))
+        else if (dynamic_cast<CharacterFile*>(other.FileTo.get()))
         {
-            FileTo = std::make_unique<ImageFile>(*dynamic_cast<ImageFile*>(other.FileTo.get()));
+            FileTo = std::make_unique<CharacterFile>(*dynamic_cast<CharacterFile*>(other.FileTo.get()));
         }
         else if (dynamic_cast<DirectoryFile*>(other.FileTo.get()))
         {
             FileTo = std::make_unique<DirectoryFile>(*dynamic_cast<DirectoryFile*>(other.FileTo.get()));
+        }else if (dynamic_cast<RegularFile*>(other.FileTo.get()))
+        {
+            FileTo = std::make_unique<RegularFile>(*dynamic_cast<RegularFile*>(other.FileTo.get()));
+        }else if (dynamic_cast<FifoFile*>(other.FileTo.get()))
+        {
+            FileTo = std::make_unique<FifoFile>(*dynamic_cast<FifoFile*>(other.FileTo.get()));
+        }else if (dynamic_cast<SocketFile*>(other.FileTo.get()))
+        {
+            FileTo = std::make_unique<SocketFile>(*dynamic_cast<SocketFile*>(other.FileTo.get()));
+        }else if (dynamic_cast<SymlinkFile*>(other.FileTo.get()))
+        {
+            FileTo = std::make_unique<SymlinkFile>(*dynamic_cast<SymlinkFile*>(other.FileTo.get()));
+        }else{
+            FileTo = std::make_unique<OtherFile>(*dynamic_cast<OtherFile*>(other.FileTo.get()));
         }
         // Add other subclasses as needed
     }
@@ -73,17 +120,22 @@ FileInList& FileInList::operator=(const FileInList& other)
     if (other.FileTo)
     {
         // Determine the actual dynamic type of the object and create the corresponding subclass
-        if (dynamic_cast<TextFile*>(other.FileTo.get()))
+        if (dynamic_cast<BlockFile*>(other.FileTo.get()))
         {
-            FileTo = std::make_unique<TextFile>(*dynamic_cast<TextFile*>(other.FileTo.get()));
+            FileTo = std::make_unique<BlockFile>(*dynamic_cast<BlockFile*>(other.FileTo.get()));
         }
-        else if (dynamic_cast<ImageFile*>(other.FileTo.get()))
+        else if (dynamic_cast<CharacterFile*>(other.FileTo.get()))
         {
-            FileTo = std::make_unique<ImageFile>(*dynamic_cast<ImageFile*>(other.FileTo.get()));
+            FileTo = std::make_unique<CharacterFile>(*dynamic_cast<CharacterFile*>(other.FileTo.get()));
         }
         else if (dynamic_cast<DirectoryFile*>(other.FileTo.get()))
         {
             FileTo = std::make_unique<DirectoryFile>(*dynamic_cast<DirectoryFile*>(other.FileTo.get()));
+        }else if (dynamic_cast<RegularFile*>(other.FileTo.get()))
+        {
+            FileTo = std::make_unique<RegularFile>(*dynamic_cast<RegularFile*>(other.FileTo.get()));
+        }else{
+            FileTo = std::make_unique<OtherFile>(*dynamic_cast<OtherFile*>(other.FileTo.get()));
         }
         // Add other subclasses as needed
     }

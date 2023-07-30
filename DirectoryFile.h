@@ -2,7 +2,7 @@
 #ifndef DIRECTORY_FILE_H
 #define DIRECTORY_FILE_H
 
-#include "File.h"
+#include "file.h"
 #include <filesystem>
 #include <iostream>
 #include <vector>
@@ -10,12 +10,10 @@
 class DirectoryFile : public File {
 public:
     void open(std::string path) override {
-        std::cout << "Opening dir file." << std::endl;
+        std::cout << "Opening dir file?" << std::endl;
     }
 
-    void close() override {
-        std::cout << "Closing text file." << std::endl;
-    }
+
 
     std::vector<std::string> read(std::string path) override {
         std::vector<std::string> result;
@@ -30,9 +28,6 @@ public:
         return result;
     }
 
-    void write() override {
-        std::cout << "Writing to text file." << std::endl;
-    }
 };
 
 #endif // TEXT_FILE_H

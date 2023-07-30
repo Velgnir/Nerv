@@ -1,17 +1,11 @@
-#ifndef EXEFILE_H
-#define EXEFILE_H
+#ifndef FIFOFILE_H
+#define FIFOFILE_H
 
-#include "File.h"
-#include <filesystem>
-#include <iostream>
-#include <vector>
-
-
-class ExeFile : public File {
+class FifoFile : public File {
 public:
     void open(std::string path) override {
-
-       std::string command = "start \"\" \"" + path + "\"";
+#ifdef _WIN32
+        std::string command = "start \"\" \"" + path + "\"";
 
         // Execute the shell command to open the image file
         int result = std::system(command.c_str());
@@ -22,19 +16,16 @@ public:
         } else {
             std::cout << "Error opening exe file." << std::endl;
         }
-    }
+#elif __linux__
+        system(path.c_str());
+#endif
 
-    void close() override {
-        std::cout << "Closing text file." << std::endl;
+
     }
 
     std::vector<std::string> read(std::string path) override {
         return {};
     }
-
-    void write() override {
-        std::cout << "Writing to text file." << std::endl;
-    }
 };
 
-#endif // EXEFILE_H
+#endif // FIFOFILE_H
