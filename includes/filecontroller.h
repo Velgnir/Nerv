@@ -14,7 +14,7 @@
 #include <vector>
 #include <string>
 #include <filesystem>
-#include "fileinlist.h"
+#include "includes/fileinlist.h"
 #include "qdebug.h"
 #ifndef FILECONTROLLER_H
 #define FILECONTROLLER_H
@@ -51,8 +51,8 @@ public:
         if(isCut){
         if (std::filesystem::exists(Copy_path)) {
             std::filesystem::rename(Copy_path, path_plus_name(Copy_path,destinationFile));
-            qDebug("Paste");
-            qDebug() << path_plus_name(Copy_path,destinationFile);
+            //qDebug("Paste");
+            //qDebug() << path_plus_name(Copy_path,destinationFile);
         } else {
             std::cout << "Source file does not exist at the specified path." << std::endl;
         }

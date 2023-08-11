@@ -1,9 +1,13 @@
-#ifndef OTHERFILES_H
-#define OTHERFILES_H
-#include "file.h"
-#include <iostream>
+#ifndef REGULARFILE_H
+#define REGULARFILE_H
 
-class OtherFile : public File {
+#include "includes/file.h"
+#include <filesystem>
+#include <iostream>
+#include <vector>
+
+
+class RegularFile : public File {
 public:
     void open(std::string path) override {
 #ifdef _WIN32
@@ -24,11 +28,10 @@ public:
 
 
     }
+
     std::vector<std::string> read(std::string path) override {
-        std::cout << "Reading text file." << std::endl;
         return {};
     }
-
 };
-#endif // OTHERFILES_H
 
+#endif // REGULARFILE_H

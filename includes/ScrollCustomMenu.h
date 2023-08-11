@@ -1,4 +1,4 @@
-#include "filecontroller.h"
+#include "includes/filecontroller.h"
 #ifndef CUSTOMSCROLLAREA_H
 #define CUSTOMSCROLLAREA_H
 

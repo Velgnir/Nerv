@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "mainwindow.h" // Your main window header file
+#include "includes/mainwindow.h" // Your main window header file
 
 int main(int argc, char *argv[])
 {

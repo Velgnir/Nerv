@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 6.5.2
+** Created by: Qt User Interface Compiler version 5.15.10
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,7 +10,7 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGridLayout>
@@ -46,57 +46,57 @@ public:
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
-            MainWindow->setObjectName("MainWindow");
+            MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(1308, 648);
         actionEnter = new QAction(MainWindow);
-        actionEnter->setObjectName("actionEnter");
+        actionEnter->setObjectName(QString::fromUtf8("actionEnter"));
         actionEnter->setCheckable(true);
         centralwidget = new QWidget(MainWindow);
-        centralwidget->setObjectName("centralwidget");
+        centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         lineEdit = new QLineEdit(centralwidget);
-        lineEdit->setObjectName("lineEdit");
+        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
         lineEdit->setGeometry(QRect(120, 10, 1181, 24));
         pushButton_Next = new QPushButton(centralwidget);
-        pushButton_Next->setObjectName("pushButton_Next");
+        pushButton_Next->setObjectName(QString::fromUtf8("pushButton_Next"));
         pushButton_Next->setGeometry(QRect(60, 10, 41, 24));
         pushButton_Prev = new QPushButton(centralwidget);
-        pushButton_Prev->setObjectName("pushButton_Prev");
+        pushButton_Prev->setObjectName(QString::fromUtf8("pushButton_Prev"));
         pushButton_Prev->setGeometry(QRect(10, 10, 41, 24));
         scrollArea = new QScrollArea(centralwidget);
-        scrollArea->setObjectName("scrollArea");
+        scrollArea->setObjectName(QString::fromUtf8("scrollArea"));
         scrollArea->setGeometry(QRect(490, 40, 801, 551));
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
-        scrollAreaWidgetContents->setObjectName("scrollAreaWidgetContents");
+        scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
         scrollAreaWidgetContents->setGeometry(QRect(0, 0, 799, 549));
         gridLayoutWidget = new QWidget(scrollAreaWidgetContents);
-        gridLayoutWidget->setObjectName("gridLayoutWidget");
+        gridLayoutWidget->setObjectName(QString::fromUtf8("gridLayoutWidget"));
         gridLayoutWidget->setGeometry(QRect(0, 0, 801, 551));
         gridLayout = new QGridLayout(gridLayoutWidget);
-        gridLayout->setObjectName("gridLayout");
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         gridLayout->setContentsMargins(0, 0, 0, 0);
         scrollArea->setWidget(scrollAreaWidgetContents);
         scrollArea_2 = new QScrollArea(centralwidget);
-        scrollArea_2->setObjectName("scrollArea_2");
+        scrollArea_2->setObjectName(QString::fromUtf8("scrollArea_2"));
         scrollArea_2->setGeometry(QRect(0, 40, 471, 551));
         scrollArea_2->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
-        scrollAreaWidgetContents_2->setObjectName("scrollAreaWidgetContents_2");
+        scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
         scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 469, 549));
         formLayoutWidget = new QWidget(scrollAreaWidgetContents_2);
-        formLayoutWidget->setObjectName("formLayoutWidget");
+        formLayoutWidget->setObjectName(QString::fromUtf8("formLayoutWidget"));
         formLayoutWidget->setGeometry(QRect(0, 0, 471, 551));
         formLayout = new QFormLayout(formLayoutWidget);
-        formLayout->setObjectName("formLayout");
+        formLayout->setObjectName(QString::fromUtf8("formLayout"));
         formLayout->setContentsMargins(0, 0, 0, 0);
         scrollArea_2->setWidget(scrollAreaWidgetContents_2);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
-        menubar->setObjectName("menubar");
+        menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 1308, 21));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
-        statusbar->setObjectName("statusbar");
+        statusbar->setObjectName(QString::fromUtf8("statusbar"));
         MainWindow->setStatusBar(statusbar);
 
         retranslateUi(MainWindow);

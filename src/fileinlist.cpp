@@ -1,12 +1,12 @@
-#include "fileinlist.h"
-#include "Blockfile.h"
-#include "CharacterFile.h"
-#include "DirectoryFile.h"
-#include "RegularFile.h"
-#include "OtherFiles.h"
-#include "Symlink.h"
-#include "FifoFile.h"
-#include "SocketFile.h"
+#include "includes/fileinlist.h"
+#include "includes/Blockfile.h"
+#include "includes/CharacterFile.h"
+#include "includes/DirectoryFile.h"
+#include "includes/RegularFile.h"
+#include "includes/OtherFiles.h"
+#include "includes/Symlink.h"
+#include "includes/FifoFile.h"
+#include "includes/SocketFile.h"
 std::string getFileExtension(const std::string& filename) {
     size_t dotPos = filename.find_last_of(".");
     if (dotPos != std::string::npos) {
@@ -44,28 +44,28 @@ FileInList::FileInList(std::string path, std::string name, int set_level){
 
     if (std::filesystem::is_directory(path)) {
         FileTo = std::make_unique<DirectoryFile>();
-        std::cout << "File is a directory file." << std::endl;
+        //std::cout << "File is a directory file." << std::endl;
     } else if (std::filesystem::is_regular_file(path)) {
         FileTo = std::make_unique<RegularFile>();
-        std::cout << "File is a regular file." << std::endl;
+       // std::cout << "File is a regular file." << std::endl;
     } else if (std::filesystem::is_block_file(path)) {
         FileTo = std::make_unique<BlockFile>();
-        std::cout << "File is a block device." << std::endl;
+        //std::cout << "File is a block device." << std::endl;
     } else if (std::filesystem::is_character_file(path)) {
         FileTo = std::make_unique<CharacterFile>();
-        std::cout << "File is a character device." << std::endl;
+       // std::cout << "File is a character device." << std::endl;
     } else if (std::filesystem::is_fifo(path)) {
         FileTo = std::make_unique<FifoFile>();
-        std::cout << "File is a FIFO (Named Pipe)." << std::endl;
+       // std::cout << "File is a FIFO (Named Pipe)." << std::endl;
     } else if (std::filesystem::is_socket(path)) {
         FileTo = std::make_unique<SocketFile>();
-        std::cout << "File is a socket." << std::endl;
+       // std::cout << "File is a socket." << std::endl;
     } else if (std::filesystem::is_symlink(path)) {
         FileTo = std::make_unique<SymlinkFile>();
-        std::cout << "File is a symbolic link." << std::endl;
+       // std::cout << "File is a symbolic link." << std::endl;
     } else {
         FileTo = std::make_unique<OtherFile>();
-        std::cout << "Unknown file type." << std::endl;
+       // std::cout << "Unknown file type." << std::endl;
     }
 }
 

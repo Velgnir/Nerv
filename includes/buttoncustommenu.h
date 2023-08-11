@@ -6,7 +6,7 @@
 #include <QAction>
 #include <QContextMenuEvent>
 #include <QDebug>
-#include "filecontroller.h"
+#include "includes/filecontroller.h"
 
 class BUTTONCUSTOMMENU : public QPushButton {
 public:
@@ -35,23 +35,23 @@ protected:
             if (!tooltip.isEmpty()) {
                 file_operator->copy(tooltip.toStdString());
             }
-            qDebug("copy");
-            qDebug() << tooltip.toStdString();
+          //  qDebug("copy");
+         //   qDebug() << tooltip.toStdString();
         } else if (selectedItem == cutAction) {
 
             if (!tooltip.isEmpty()) {
                 file_operator->cut(tooltip.toStdString());
             }
-            qDebug("cut");
-            qDebug() << tooltip.toStdString();
+          //  qDebug("cut");
+          //  qDebug() << tooltip.toStdString();
         } else if (selectedItem == pasteAction) {
             std::filesystem::path pathObj(tooltip.toStdString());
-            qDebug("Paste");
-            qDebug() << tooltip.toStdString();
+           // qDebug("Paste");
+           // qDebug() << tooltip.toStdString();
 
             if (std::filesystem::is_directory(pathObj)) {
                 file_operator->paste(tooltip.toStdString());
-                 qDebug("Done");
+               //  qDebug("Done");
 
             }
         }else if (selectedItem == deleteAction) {
@@ -59,8 +59,8 @@ protected:
             if (!tooltip.isEmpty()) {
                 file_operator->remove(tooltip.toStdString());
             }
-            qDebug("Deleted");
-            qDebug() << tooltip.toStdString();
+           // qDebug("Deleted");
+           // qDebug() << tooltip.toStdString();
         }
     }
 

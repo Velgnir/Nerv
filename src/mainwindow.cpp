@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "includes/mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -119,7 +119,7 @@ void MainWindow::Folders() {
     ui->gridLayout = new QGridLayout;
 
     scrollLayout->addLayout(ui->gridLayout);
-    scrollLayout->addLayout(ui->gridLayout);
+    //scrollLayout->addLayout(ui->gridLayout);
     scrollContent->setLayout(scrollLayout);
     scrollArea->setWidget(scrollContent);
     scrollContent->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);

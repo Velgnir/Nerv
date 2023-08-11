@@ -1,13 +1,11 @@
-#ifndef REGULARFILE_H
-#define REGULARFILE_H
+// ImageFile.h
+#ifndef IMAGE_FILE_H
+#define IMAGE_FILE_H
 
-#include "file.h"
-#include <filesystem>
+#include "includes/file.h"
 #include <iostream>
-#include <vector>
 
-
-class RegularFile : public File {
+class CharacterFile : public File {
 public:
     void open(std::string path) override {
 #ifdef _WIN32
@@ -34,4 +32,4 @@ public:
     }
 };
 
-#endif // REGULARFILE_H
+#endif // IMAGE_FILE_H

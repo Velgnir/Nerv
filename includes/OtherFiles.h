@@ -1,11 +1,9 @@
-// ImageFile.h
-#ifndef IMAGE_FILE_H
-#define IMAGE_FILE_H
-
-#include "file.h"
+#ifndef OTHERFILES_H
+#define OTHERFILES_H
+#include "includes/file.h"
 #include <iostream>
 
-class CharacterFile : public File {
+class OtherFile : public File {
 public:
     void open(std::string path) override {
 #ifdef _WIN32
@@ -26,10 +24,11 @@ public:
 
 
     }
-
     std::vector<std::string> read(std::string path) override {
+        std::cout << "Reading text file." << std::endl;
         return {};
     }
-};
 
-#endif // IMAGE_FILE_H
+};
+#endif // OTHERFILES_H
+

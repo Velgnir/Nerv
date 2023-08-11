@@ -1,4 +1,4 @@
-#include "filecontroller.h"
+#include "includes/filecontroller.h"
 #include <QApplication>
 #include <QWidget>
 #include <QPushButton>
@@ -6,8 +6,8 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QWidget>
-#include "ui_mainwindow.h"
-#include "filecontroller.h"
+#include "includes/ui_mainwindow.h"
+#include "includes/filecontroller.h"
 #include <QCheckBox>
 #include <QLabel>
 #include <filesystem>
@@ -16,8 +16,8 @@
 //#include <QMimeData>
 //#include <QUrl>
 //#include <QDebug>
-#include "buttoncustommenu.h"
-#include "ScrollCustomMenu.h"
+#include "includes/buttoncustommenu.h"
+#include "includes/ScrollCustomMenu.h"
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
