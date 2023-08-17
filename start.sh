@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Set the path to your Qt installation
+#!/bin/bash
 project_dir=$(dirname "$0")
 
 # Determine the operating system
@@ -36,31 +39,24 @@ converted_path="${path//\\//}"
     fi
 fi
 
-# Assume the first Qt installation found as the one to use
-qt_path="${qt_paths[0]}"
+# Get the directory of the script
+project_dir=$(dirname "$0")
 
+# Create and navigate to the build directory
+mkdir -p "$project_dir/build"
+cd "$project_dir/build"
 
+# Generate build files using CMake
+cmake -DCMAKE_PREFIX_PATH=$QT_INSTALL_PATH "$project_dir"
 
-build_dir="$project_dir/build/"
+# Build the project using make (adjust the number of jobs as needed)
+make -j$(nproc)
 
-# Create build directory if it doesn't exist
-mkdir -p "$build_dir"
-cd "$build_dir"
-
-# Compile the project
-"$qt_path" -makefile "$project_dir"
-make -j$(nproc) # Adjust the number of jobs to match your system's CPU cores
-
-# Run the compiled executable
-executable_name=$(basename "$(find . -name "Nerv.exe" -o -name "Nerv")")
-if [ -n "$executable_name" ]; then
-    if [[ "$OSTYPE" == "msys" ]]; then
-        # On Windows, run the executable directly
-        "./$executable_name"
-    else
-        # On Linux, run the executable
-        "./$executable_name"
-    fi
+# Check if the build was successful
+if [ $? -eq 0 ]; then
+    echo "Build successful. Running the executable..."
+    # Run the compiled program
+    ./Nerv
 else
-    echo "Executable not found."
+    echo "Build failed."
 fi

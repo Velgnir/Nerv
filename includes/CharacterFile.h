@@ -2,7 +2,7 @@
 #ifndef IMAGE_FILE_H
 #define IMAGE_FILE_H
 
-#include "includes/file.h"
+#include "file.h"
 #include <iostream>
 
 class CharacterFile : public File {
@@ -27,7 +27,7 @@ public:
 
     }
 
-    std::vector<std::string> read(std::string path) override {
+    std::vector<std::string> read(std::string /*path*/) override {
         return {};
     }
 };

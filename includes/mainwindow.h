@@ -1,13 +1,13 @@
-#include "includes/filecontroller.h"
+
 #include <QApplication>
 #include <QWidget>
 #include <QPushButton>
 #include <QGridLayout>
 #include <QDir>
+#include <QStyle>
 #include <QFileInfo>
 #include <QWidget>
-#include "includes/ui_mainwindow.h"
-#include "includes/filecontroller.h"
+#include "ui_mainwindow.h"
 #include <QCheckBox>
 #include <QLabel>
 #include <filesystem>
@@ -16,8 +16,8 @@
 //#include <QMimeData>
 //#include <QUrl>
 //#include <QDebug>
-#include "includes/buttoncustommenu.h"
-#include "includes/ScrollCustomMenu.h"
+#include "buttoncustommenu.h"
+#include "CustomScrollArea.h"
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -32,11 +32,12 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    void Folders();
     FileController Nerv;
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    MainWindow(QWidget *parent = nullptr) ;
+    ~MainWindow() override;
     std::vector<FileInList> Update_File_Tree(std::vector<FileInList> tree);
-
+    void Update();
     /*
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -50,13 +51,14 @@ private slots:
 
     void on_pushButton_Next_clicked();
 
-    void on_checkBox_stateChanged(int arg1);
+    void on_checkBox_stateChanged(int /*arg1*/);
 
     //void showContextMenu(const QPoint& pos);
 private:
-    void Folders();
-    void Update();
+
+
     void Update_browser();
+    void File_Search(std::vector<FileInList>& tree,std::vector<FileInList>::size_type i, std::string path,std::vector<FileInList>& new_tree);
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

@@ -4,66 +4,32 @@
 #include <QPushButton>
 #include <QMenu>
 #include <QAction>
+#include <QLabel>
 #include <QContextMenuEvent>
 #include <QDebug>
-#include "includes/filecontroller.h"
+#include <filesystem>
+#include "filecontroller.h"
+
+class MainWindow;
 
 class BUTTONCUSTOMMENU : public QPushButton {
 public:
     BUTTONCUSTOMMENU(QWidget* parent = nullptr);
-    BUTTONCUSTOMMENU(const QString& text, FileController* ref,QWidget* parent  = nullptr);
-
+    BUTTONCUSTOMMENU( MainWindow *mainwindow,const QString& text, FileController* ref,QWidget* parent  = nullptr);
+    QLabel* File_name;
+    QLabel* File_Location;
+    QLabel* File_weight;
+    QLabel* File_type;
     //void initializeContextMenu();
 private:
+    MainWindow *mainwindowref;
     FileController* file_operator;
+    std::string formatFileSize(uintmax_t size);
+    uintmax_t getTotalDirectorySize(const std::filesystem::path& directoryPath);
 protected:
-    void contextMenuEvent(QContextMenuEvent* event) override {
-        QMenu menu(this);
-
-        QAction* copyAction = menu.addAction("Copy");
-        QAction* cutAction = menu.addAction("Cut");
-        QAction* pasteAction = menu.addAction("Paste");
-        QAction* deleteAction = menu.addAction("Delete");
-
-        // Show the context menu at the mouse position
-        QAction* selectedItem = menu.exec(event->globalPos());
-        QString tooltip = toolTip();
-        // Handle the selected action (if any)
-        if (selectedItem == copyAction) {
-            // Accessing the tooltip of the button
-           // QString tooltip = toolTip();
-            if (!tooltip.isEmpty()) {
-                file_operator->copy(tooltip.toStdString());
-            }
-          //  qDebug("copy");
-         //   qDebug() << tooltip.toStdString();
-        } else if (selectedItem == cutAction) {
-
-            if (!tooltip.isEmpty()) {
-                file_operator->cut(tooltip.toStdString());
-            }
-          //  qDebug("cut");
-          //  qDebug() << tooltip.toStdString();
-        } else if (selectedItem == pasteAction) {
-            std::filesystem::path pathObj(tooltip.toStdString());
-           // qDebug("Paste");
-           // qDebug() << tooltip.toStdString();
-
-            if (std::filesystem::is_directory(pathObj)) {
-                file_operator->paste(tooltip.toStdString());
-               //  qDebug("Done");
-
-            }
-        }else if (selectedItem == deleteAction) {
-
-            if (!tooltip.isEmpty()) {
-                file_operator->remove(tooltip.toStdString());
-            }
-           // qDebug("Deleted");
-           // qDebug() << tooltip.toStdString();
-        }
-    }
-
+    void contextMenuEvent(QContextMenuEvent* event) override;
+private slots:
+    void onAction1Triggered();
 };
 
 #endif // BUTTONCUSTOMMENU_H

@@ -1,10 +1,7 @@
-#include "includes/ScrollCustomMenu.h"
-#include <QMenu>
-#include <QContextMenuEvent>
-#include <QAction>
-
-CustomScrollArea::CustomScrollArea(FileController *set_file_operator,QWidget* parent)
-    : QScrollArea(parent) {
+#include "CustomScrollArea.h"
+#include "mainwindow.h"
+CustomScrollArea::CustomScrollArea(MainWindow *mainWindow,FileController *set_file_operator,QWidget* parent)
+    : QScrollArea(parent), mainWindowRef(mainWindow) {
     file_operator = set_file_operator;
     // Initialize your scroll area as needed
 }
@@ -22,12 +19,12 @@ void CustomScrollArea::contextMenuEvent(QContextMenuEvent* event) {
     contextMenu.exec(event->globalPos());
 }
 
-void CustomScrollArea::showContextMenu(const QPoint& pos) {
+void CustomScrollArea::showContextMenu(const QPoint& /*pos*/) {
     // Your code to show the context menu and handle actions...
 }
 
 void CustomScrollArea::onAction1Triggered() {
     // Code for Action 1
     file_operator->paste(file_operator->ShowPath());
+    mainWindowRef->Update();
 }
-

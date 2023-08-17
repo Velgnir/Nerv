@@ -14,8 +14,8 @@
 #include <vector>
 #include <string>
 #include <filesystem>
-#include "includes/fileinlist.h"
-#include "qdebug.h"
+#include "fileinlist.h"
+
 #ifndef FILECONTROLLER_H
 #define FILECONTROLLER_H
 
@@ -23,6 +23,8 @@
 class FileController
 {
 private:
+
+
     std::string path;
     std::string Copy_path;
 
@@ -34,49 +36,21 @@ public:
     std::vector<FileInList> Files_browser;
     std::vector<FileInList> FilesList;
    // std::vector<THE_file> buttons;
-    FileController();
+   FileController();  // Default constructor
 
-    void copy(std::string path){
-        Copy_path = path;
+
+    void copy(std::string pathset){
+        Copy_path = pathset;
         isCut = false;
     }
-    void cut(std::string path){
-        Copy_path = path;
+    void cut(std::string pathset){
+        Copy_path = pathset;
         isCut = true;
     }
 
 
-    void paste(const std::string& destinationFile) {
-        // Perform the cut (rename) operation
-        if(isCut){
-        if (std::filesystem::exists(Copy_path)) {
-            std::filesystem::rename(Copy_path, path_plus_name(Copy_path,destinationFile));
-            //qDebug("Paste");
-            //qDebug() << path_plus_name(Copy_path,destinationFile);
-        } else {
-            std::cout << "Source file does not exist at the specified path." << std::endl;
-        }
-        }else{
-        if (std::filesystem::exists(Copy_path) && std::filesystem::exists(destinationFile)) {
-            std::ifstream source(Copy_path, std::ios::binary);
-            std::ofstream dest(path_plus_name(Copy_path,destinationFile), std::ios::binary);
-            dest << source.rdbuf();
-
-            // Add these lines to close the file streams
-            source.close();
-            dest.close();
-        } else {
-            std::cout << "File does not exist at the specified path." << std::endl;
-        }
-        }
-    }
-    void remove(const std::string& destinationFile) {
-        if (std::filesystem::exists(destinationFile)) {
-            std::filesystem::remove(destinationFile);
-        } else {
-            std::cout << "File does not exist at the specified path." << std::endl;
-        }
-    }
+    void paste(const std::string& destinationFile);
+    void remove(const std::string& destinationFile);
 
     bool UpdateFiles(){
         if (std::filesystem::exists(path) && std::filesystem::is_directory(path)) {

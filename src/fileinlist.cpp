@@ -1,12 +1,12 @@
-#include "includes/fileinlist.h"
-#include "includes/Blockfile.h"
-#include "includes/CharacterFile.h"
-#include "includes/DirectoryFile.h"
-#include "includes/RegularFile.h"
-#include "includes/OtherFiles.h"
-#include "includes/Symlink.h"
-#include "includes/FifoFile.h"
-#include "includes/SocketFile.h"
+#include "fileinlist.h"
+#include "Blockfile.h"
+#include "CharacterFile.h"
+#include "DirectoryFile.h"
+#include "RegularFile.h"
+#include "OtherFiles.h"
+#include "Symlink.h"
+#include "FifoFile.h"
+#include "SocketFile.h"
 std::string getFileExtension(const std::string& filename) {
     size_t dotPos = filename.find_last_of(".");
     if (dotPos != std::string::npos) {
@@ -15,34 +15,12 @@ std::string getFileExtension(const std::string& filename) {
     return "dir";
 }
 
-FileInList::FileInList(std::string path, std::string name, int set_level){
-    this->path = path;
-    this->name = name;
-    this->level = set_level;
-    this->status = false;
+FileInList::FileInList(std::string set_path, std::string set_name, int set_level)
+    : path(std::move(set_path)), name(std::move(set_name)),  level(set_level),status(false)
+{
     std::string file_type = getFileExtension(name);
-    /*
-    if(std::filesystem::is_directory(path))
-    {
-        FileTo = std::make_unique<DirectoryFile>();
-    }else if(file_type=="txt")
-    {
-        FileTo = std::make_unique<TextFile>();
-    }else if(file_type=="jpg" || file_type=="png")
-    {
-        FileTo = std::make_unique<ImageFile>();
-    }
-    else if(file_type=="exe")
-    {
-        FileTo = std::make_unique<ExeFile>();
-    }else
-    {
-        FileTo = std::make_unique<Otherfile>();
-    }
-*/
         // Add other cases as needed for other file types
-
-    if (std::filesystem::is_directory(path)) {
+    if (std::filesystem::is_directory(path) ) {
         FileTo = std::make_unique<DirectoryFile>();
         //std::cout << "File is a directory file." << std::endl;
     } else if (std::filesystem::is_regular_file(path)) {
@@ -134,6 +112,15 @@ FileInList& FileInList::operator=(const FileInList& other)
         }else if (dynamic_cast<RegularFile*>(other.FileTo.get()))
         {
             FileTo = std::make_unique<RegularFile>(*dynamic_cast<RegularFile*>(other.FileTo.get()));
+        }else if (dynamic_cast<FifoFile*>(other.FileTo.get()))
+        {
+            FileTo = std::make_unique<FifoFile>(*dynamic_cast<FifoFile*>(other.FileTo.get()));
+        }else if (dynamic_cast<SocketFile*>(other.FileTo.get()))
+        {
+            FileTo = std::make_unique<SocketFile>(*dynamic_cast<SocketFile*>(other.FileTo.get()));
+        }else if (dynamic_cast<SymlinkFile*>(other.FileTo.get()))
+        {
+            FileTo = std::make_unique<SymlinkFile>(*dynamic_cast<SymlinkFile*>(other.FileTo.get()));
         }else{
             FileTo = std::make_unique<OtherFile>(*dynamic_cast<OtherFile*>(other.FileTo.get()));
         }

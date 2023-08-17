@@ -2,14 +2,14 @@
 #ifndef DIRECTORY_FILE_H
 #define DIRECTORY_FILE_H
 
-#include "includes/file.h"
+#include "file.h"
 #include <filesystem>
 #include <iostream>
 #include <vector>
 
 class DirectoryFile : public File {
 public:
-    void open(std::string path) override {
+    void open(std::string /*path*/) override {
         std::cout << "Opening dir file?" << std::endl;
     }
 

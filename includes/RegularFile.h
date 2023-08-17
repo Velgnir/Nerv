@@ -1,7 +1,7 @@
 #ifndef REGULARFILE_H
 #define REGULARFILE_H
 
-#include "includes/file.h"
+#include "file.h"
 #include <filesystem>
 #include <iostream>
 #include <vector>
@@ -29,7 +29,7 @@ public:
 
     }
 
-    std::vector<std::string> read(std::string path) override {
+    std::vector<std::string> read(std::string /*path*/) override {
         return {};
     }
 };

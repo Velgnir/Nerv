@@ -2,7 +2,7 @@
 #ifndef TEXT_FILE_H
 #define TEXT_FILE_H
 
-#include "includes/file.h"
+#include "file.h"
 #include <iostream>
 
 
@@ -28,7 +28,7 @@ public:
 
     }
 
-    std::vector<std::string> read(std::string path) override {
+    std::vector<std::string> read(std::string /*path*/) override {
         return {};
     }
 };

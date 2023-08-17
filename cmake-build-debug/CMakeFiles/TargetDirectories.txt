@@ -1,0 +1,5 @@
+/home/l/Nerv/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/l/Nerv/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/l/Nerv/cmake-build-debug/CMakeFiles/Nerv.analyze.dir
+/home/l/Nerv/cmake-build-debug/CMakeFiles/Nerv.dir
+/home/l/Nerv/cmake-build-debug/CMakeFiles/Nerv_autogen.dir
